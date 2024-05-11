@@ -1,8 +1,6 @@
-const Ajv= require('ajv')
-const ajv=new Ajv()
+import * as constants from "../../../constants.js";
 
-
-//Testing login input data json schema with invalid password datatype
+//Testing login input data json schema 
 describe('Login input data schema validation', ()=>{
     const requestBody1= 
     {
@@ -24,7 +22,7 @@ describe('Login input data schema validation', ()=>{
         cy.request(
             {
                 method: 'Post',
-                url:'http://192.168.8.170/Login',
+                url: constants.url+constants.login,
                 failOnStatusCode: false,
                 body: requestBody1
             }
@@ -44,7 +42,7 @@ describe('Login input data schema validation', ()=>{
         cy.request(
             {
                 method: 'Post',
-                url:'http://192.168.8.170/Login',
+                url: constants.url+constants.login,
                 failOnStatusCode: false,
                 body: requestBody2
             }
@@ -59,12 +57,12 @@ describe('Login input data schema validation', ()=>{
     }
 
     )
-     //Testing login input data json schema with invalid username datatype
+     //Testing login input data json schema with valid username and password datatype
     it("Login input data schema validation",()=>{
         cy.request(
             {
                 method: 'Post',
-                url:'http://192.168.8.170/Login',
+                url: constants.url+constants.login,
                 failOnStatusCode: false,
                 body: requestBody3
             }
@@ -80,5 +78,7 @@ describe('Login input data schema validation', ()=>{
 
     )
 }
+
+
 
 )

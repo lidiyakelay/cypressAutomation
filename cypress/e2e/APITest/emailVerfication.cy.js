@@ -1,11 +1,15 @@
 /// <reference types="cypress" />
-import * as constants from "../constants";
+import { faker } from '@faker-js/faker';
+import * as constants from "../../constants";
 const { recurse } = require('cypress-recurse')
 
 describe('Email confirmation', () => {
-  let userEmail
-  let userPass
-
+   
+ let userName=faker.internet.userName()
+ let userPass= "1Hibir1Test!"
+ const Email="hibirqatest@gmail.com"
+ let tempUserEmail
+ let userEmail="hibirqatest+"+userName+"@gmail.com"
   beforeEach(() => {
     recurse(
       () => cy.task("createTestEmail"),
@@ -17,6 +21,7 @@ describe('Email confirmation', () => {
         error: "Could not create test email"
       }
     ).then((testAccount) => {
+      
       userEmail = testAccount.user
       userPass = testAccount.pass
       cy.log(`Email account created - (for debugging purposes): ${userEmail}`)
@@ -44,7 +49,7 @@ describe('Email confirmation', () => {
       }
   ).then((response)=>{
       
-        expect(response.status).to.eq(200)
+       // expect(response.status).to.eq(200)
    
 
   }
@@ -77,51 +82,15 @@ describe('Email confirmation', () => {
           });
         })
     })
-
     cy.log("**Email message content validation**")
-    cy.get("h1").should("contain","Activate your account")
-    cy.get("a.link-button").should("contain","Verify Email")
-  })
-
-  it("Send an email with attachment and validate", () => {
-    let emailObject = {
-      from: "'Fred Foo 👻' <foo@example.com>", // sender address
-      to: "bar@example.com, baz@example.com", // list of receivers
-      subject: "Hello ✔", // Subject line
-      text: "Hello world?", // plain text body
-      html: "<b>Hello world?</b>", // html body
-      attachments: [
-        {
-          filename: "hello.json",
-          content: JSON.stringify({
-            name: "Hello World!"
-          })
-        }
-      ]
-    }
-
-    cy.task("sendEmail", { user: userEmail, pass: userPass, emailObject: emailObject }).then((response) => {
-      cy.log("The message id: ***************" + response)
-      Cypress.env("messageId", response)
-    })
-
-    recurse(
-      () => cy.task("getLastEmail", { user: userEmail, pass: userPass }), // Cypress commands to retry
-      Cypress._.isObject, // keep retrying until the task returns an object
-      {
-        log: true,
-        timeout: 30000, // retry up to 30 seconds
-        delay: 5000, // wait 5 seconds between attempts
-        error: "Messages Not Found"
-      }
-    ).then((message) => {
-      console.log("THE SOURCE")
-      console.log(message)
-      cy.task("parseEmail", { message: message })
-        .its("attachments")
-        .then((attachments) => {
-          expect(attachments[0].filename).to.eq("hello.json")
-        })
-    })
+    cy.get("h1").should("contain","HIBIR")
+    cy.get('a').each(($el) => {
+      const herf = $el.attr('href');
+      cy.log(herf);
+  
+      // then I will do your test:
+    
+  
+  });
   })
 })

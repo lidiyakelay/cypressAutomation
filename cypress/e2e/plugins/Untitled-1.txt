@@ -1,0 +1,38 @@
+beforeEach(()=>{
+
+  const requestBody1= 
+  {
+              accesstype: "Client",
+              address: "addis ababa",
+              description: "test test",
+              email: userEmail,
+              name:userName,
+              phone: "251911121314"
+  
+  }
+  cy.log(userEmail)
+  cy.log(requestBody1.email)
+  cy.request(
+    {
+        method: 'Post',
+        url: constants.url+constants.createOrg,
+        failOnStatusCode: false,
+        body: requestBody1
+    }
+).then((response)=>{
+    
+     cy.log(response.status)
+ 
+
+}
+
+)
+
+ })
+ const userName=faker.internet.userName()
+ const userPass= "1Hibir1Test!"
+ const Email="hibirqatest@gmail.com"
+ let tempUserEmail
+ let userEmail="hibirqatest+"+userName+"@gmail.com"
+ import * as constants from "../constants";
+import { faker } from '@faker-js/faker';
