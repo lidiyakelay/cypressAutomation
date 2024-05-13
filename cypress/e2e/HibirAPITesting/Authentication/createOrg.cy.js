@@ -41,7 +41,7 @@ describe('create organization functionality Input data length Test', ()=>{
                 accesstype: "Client",
                 address: "addis ababa",
                 description: "testing",
-                email: " ",
+                email: Math.floor(Math.random() * 90 + 10),
                 name: faker.internet.userName(),
                 phone: "251911121318"
     
@@ -53,7 +53,7 @@ describe('create organization functionality Input data length Test', ()=>{
                 address: "addis ababa",
                 description: "test test",
                 email: faker.internet.email(),
-                name: " ",
+                name: Math.floor(Math.random() * 90 + 10),
                 phone: "251911121318"
     
     }

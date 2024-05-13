@@ -9,7 +9,7 @@ describe('Email confirmation', () => {
  let userPass= "1Hibir1Test!"
  const Email="hibirqatest@gmail.com"
  let tempUserEmail
- let userEmail="hibirqatest+"+userName+"@gmail.com"
+ let userEmail
   beforeEach(() => {
     recurse(
       () => cy.task("createTestEmail"),
@@ -82,15 +82,12 @@ describe('Email confirmation', () => {
           });
         })
     })
+
     cy.log("**Email message content validation**")
-    cy.get("h1").should("contain","HIBIR")
-    cy.get('a').each(($el) => {
-      const herf = $el.attr('href');
-      cy.log(herf);
-  
-      // then I will do your test:
-    
-  
-  });
+    cy.get("h1")
+    cy.get('input[name="hiddenToken"]');
+   
   })
+
+ 
 })

@@ -7,7 +7,6 @@ const parseEmail = require('./cypress/e2e/plugins/parse-email')
 module.exports = defineConfig({
   chromeWebSecurity: false,
   e2e: {
-    baseUrl: "https://dashboard.cypress.io",
     setupNodeEvents: async (on, config) => {
       
       specPattern: 'cypress/e2e/**/*.{js,jsx,ts,tsx}'
