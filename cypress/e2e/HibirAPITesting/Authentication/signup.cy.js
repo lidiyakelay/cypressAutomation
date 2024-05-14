@@ -346,85 +346,6 @@ it("//Testing create organization token validation",()=>{
 
 
 
-describe('Testing create organization token', ()=>{
-    let orgID
-    let totalpage
-    let authToken = null;
-    let useremail= "hibirqatest@gmail.com"
-    const requestBody1= 
-    {
-        username: "Main",
-        password: "!QAZxsw2"
-    }
-
-    before('Login as admin', () => {
-             cy.request({
-                  method: 'POST',
-                     url: constants.url + constants.login,
-                     body: requestBody1
-                
-                 }).then((response) => {
-                     cy.log(response.status)
-                     // Extract the session cookie value from the headers
-                     const cookies = response.headers['set-cookie'];
-                     const sessionCookie = getSessionValue(cookies, 'session');
-                     authToken=sessionCookie
-                   // Log the session cookie value
-                   cy.log(sessionCookie);
-                  expect(response.status).to.eq(200);
-             });
-            });
-
-    it("//Get the organization id",()=>{
-    cy.request(
-        {
-            method: 'Get',
-            url: constants.url+constants.firmPage+"/"+1,
-            failOnStatusCode: false,
-        }
-    ).then((response)=>{
-         
-         
-          expect(response.status).to.eq(200)
-          totalpage= response.body.total_pages
-          for(let i=1; i < totalpage; i++ ) {
-            cy.request(
-                {
-                    method: 'Get',
-                    url: constants.url+constants.firmPage+"/"+i,
-                    failOnStatusCode: false,
-                }
-            ).then((response)=>{
-                expect(response.status).to.eq(200)
-                for(let j=0; j < 10; j++ ){
-                    if(response.body.firms[j].email==useremail){
-                        cy.log("////////////////////////////")
-                        cy.log(response.body.firms[j].email)
-                        orgID=response.body.firms[j].id
-                        cy.log(response.body.firms[j].id)
-                        break
-
-                        
-                    }
-            }})
-
-
-             /* 
-             } */
-            
-          }
-
-    }
-
-    )
-  
-
-})
-
-
-})
-
-
 
 
 
@@ -435,101 +356,152 @@ describe('Testing create organization token', ()=>{
 //
 ///////////////////////////////////////////////////////////////////////////////////
 //Testing signup for Firm
-// /* describe('Signup as Firm', ()=>{
-//     let authToken = null;
-//     let signupToken
-//     let useremail= faker.internet.email()
-//     let username= faker.internet.userName()
-//     const requestBody1= 
-//     {
-//         username: username,
-//         password: "!QAZxsw2"
-//     }
-//     const requestBody= 
-//         {
-//                     accesstype: "Firm",
-//                     address: "addis ababa",
-//                     description: "test test",
-//                     email: useremail,
-//                     name: username,
-//                     phone: "251999880766"
+describe('Signup as Firm', ()=>{
+    let totalpage
+    let orgID
+    let authToken = null;
+    let signupToken
+    let useremail= faker.internet.email()
+    let username= faker.internet.userName()
+    const requestBody1= 
+    {
+        username: username,
+        password: "!QAZxsw2"
+    }
+    const requestBody= 
+        {
+                    accesstype: "Firm",
+                    address: "addis ababa",
+                    description: "test test",
+                    email: useremail,
+                    name: username,
+                    phone: "251999880766"
         
-//         }
-//         const requestBody2= 
-//         {
-//             username: "Main",
-//             password: "!QAZxsw2"
-//         }
-//     before('Create organization as Firm', () => {
+        }
+        const requestBody2= 
+        {
+            username: "Main",
+            password: "!QAZxsw2"
+        }
+    before('Create organization as Firm', () => {
         
        
-//              cy.request({
-//             method: 'POST',
-//             url: constants.url + constants.createOrg,
-//             body: requestBody
+             cy.request({
+            method: 'POST',
+            url: constants.url + constants.createOrg,
+            body: requestBody
         
-//         }).then((response) => {
-//             expect(response.status).to.eq(200);
-//             signupToken= response.body.token
-//             cy.log(signupToken)
+        }).then((response) => {
+            cy.log(useremail)
+            expect(response.status).to.eq(200);
+            signupToken= response.body.token
+            cy.log(signupToken)
 
-//         });
-//     });
+        });
+    });
     
-//     before('Login as admin', () => {
-//         cy.request({
-//             method: 'POST',
-//             url: constants.url + constants.login,
-//             body: requestBody2
+    before('Login as admin', () => {
+        cy.request({
+            method: 'POST',
+            url: constants.url + constants.login,
+            body: requestBody2
         
-//         }).then((response) => {
-//             cy.log(response.status)
-//             // Extract the session cookie value from the headers
-//             const cookies = response.headers['set-cookie'];
-//             const sessionCookie = getSessionValue(cookies, 'session');
-//             authToken=sessionCookie
-//             // Log the session cookie value
-//             cy.log(sessionCookie);
-//             expect(response.status).to.eq(200);
-//         });
-//     });
-   
-//     before("crhange firm status",()=>{
-//         cy.request(
-//             {
-//                 method: 'Post',
-//                 url: constants.url+constants.createFirm,
-//                 failOnStatusCode: false,
-//                 body: requestBody
-//             }
-//         ).then((response)=>{
-//              cy.log(response.body)
-//               signupToken= response.body.token
-//               expect(response.status).to.eq(403)
+        }).then((response) => {
+            cy.log(response.status)
+            // Extract the session cookie value from the headers
+            const cookies = response.headers['set-cookie'];
+            const sessionCookie = getSessionValue(cookies, 'session');
+            authToken=sessionCookie
+            // Log the session cookie value
+            cy.log(sessionCookie);
+            expect(response.status).to.eq(200);
+        });
+    });
+    before("//Get the organization id",()=>{
+        cy.request(
+            {
+                method: 'Get',
+                url: constants.url+constants.firmPage+"/"+1,
+                failOnStatusCode: false,
+            }
+        ).then((response)=>{
+             
+             
+              expect(response.status).to.eq(200)
+              totalpage= response.body.total_pages
+              for(let i=1; i <= totalpage; i++ ) {
+                cy.request(
+                    {
+                        method: 'Get',
+                        url: constants.url+constants.firmPage+"/"+i,
+                        failOnStatusCode: false,
+                    }
+                ).then((response)=>{
+                    expect(response.status).to.eq(200)
+                    for(let j=0; j < 10; j++ ){
+                        if(response.body.firms[j].email==useremail){
+                            orgID=response.body.firms[j].id
+                            cy.log(response.body.firms[j].id)
+                            break
+    
+                            
+                        }
+                }})
+    
+    
+                
+              }
+    
+        }
+    
+        )
+      
+    
+    })
+    before("change firm status",()=>{
+        cy.request(
+            {
+                method: 'Post',
+                url: constants.url+constants.changefirmstatus,
+                failOnStatusCode: false,
+                body: {
+                    "orgID": orgID
+ 
+                }
+                ,
+                headers:{
+                    'Content-Type':'application/json',
+                    'Authorization':'Bearer'+ authToken
+                }
+            }
+        ).then((response)=>{
+             cy.log(response.body.token)
+              signupToken= response.body.token
+              expect(response.status).to.eq(200)
          
 
-//         }
+        }
 
-//         )
-//     }
-//     )
-
-//     it("Testing signup as firm",()=>{
-//         cy.request(
-//             {
-//                 method: 'Post',
-//                 url: constants.url+constants.signup+"/"+signupToken,
-//                 failOnStatusCode: false,
-//                 body: requestBody1
-//             }
-//         ).then((response)=>{
-//               cy.log(response.body)
-//               expect(response.status).to.eq(200)
+        )
+    }
+    )
+    
+    it("Testing signup as firm",()=>{
+        cy.request(
+            {
+                method: 'Post',
+                url: constants.url+constants.signup+"/"+signupToken,
+                failOnStatusCode: false,
+                body: requestBody1
+            }
+        ).then((response)=>{
+              cy.log(response.body)
+              expect(response.status).to.eq(200)
               
                 
-//         }
+        }
 
-//         )
-//     }
-//     )
+        )
+    }
+    )})
      

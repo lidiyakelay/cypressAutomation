@@ -7,5 +7,7 @@ export const firmPage='firms';
 export const logout= 'Logout';
 export const createFirm= 'create-firm';
 export const signup= 'signup';
+export const changefirmstatus= 'change-firm-status';
+
 
 
