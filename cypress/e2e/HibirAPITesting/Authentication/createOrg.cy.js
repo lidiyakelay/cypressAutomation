@@ -1,6 +1,6 @@
-import * as constants from "../../../constants.js";
-import { faker } from '@faker-js/faker';
 
+import { faker } from '@faker-js/faker';
+import { createOrg} from '../../../const_functions/const_functions.cy.js';
 
 
 //Testing create organization functionality for input data length
@@ -11,6 +11,7 @@ describe('create organization functionality Input data length Test', ()=>{
                 address: "addis ababa",
                 description: "test test",
                 email: faker.internet.email(),
+                organization_email:faker.internet.email(),
                 name: faker.internet.userName(),
                 phone: " "
     
@@ -22,6 +23,7 @@ describe('create organization functionality Input data length Test', ()=>{
                 address: " ",
                 description: "test test",
                 email: faker.internet.email(),
+                organization_email:faker.internet.email(),
                 name: faker.internet.userName(),
                 phone: "251911121318"
     
@@ -32,6 +34,7 @@ describe('create organization functionality Input data length Test', ()=>{
                 address:"Addis Ababa",
                 description: " ",
                 email: faker.internet.email(),
+                organization_email:faker.internet.email(),
                 name: faker.internet.userName(),
                 phone: "251911121318"
     
@@ -42,6 +45,7 @@ describe('create organization functionality Input data length Test', ()=>{
                 address: "addis ababa",
                 description: "testing",
                 email: Math.floor(Math.random() * 90 + 10),
+                organization_email:faker.internet.email(),
                 name: faker.internet.userName(),
                 phone: "251911121318"
     
@@ -54,6 +58,7 @@ describe('create organization functionality Input data length Test', ()=>{
                 description: "test test",
                 email: faker.internet.email(),
                 name: Math.floor(Math.random() * 90 + 10),
+                organization_email:faker.internet.email(),
                 phone: "251911121318"
     
     }
@@ -64,124 +69,83 @@ describe('create organization functionality Input data length Test', ()=>{
                 description: "test test",
                 email: faker.internet.email(),
                 name: faker.internet.userName(),
+                organization_email:faker.internet.email(),
+                phone: "251910121314"
+    
+    }
+    const requestBody7= 
+    {
+                accesstype: " ",
+                address: "addis ababa",
+                description: "test test",
+                email:faker.internet.email(),
+                name: faker.internet.userName(),
+                organization_email: Math.floor(Math.random() * 90 + 10),
                 phone: "251910121314"
     
     }
     
     //Testing create organization input data phone length
     it("Testing create organization input data phone length",()=>{
-        cy.request(
-            {
-                method: 'Post',
-                url: constants.url+constants.createOrg,
-                failOnStatusCode: false,
-                body: requestBody1
-            }
-        ).then((response)=>{
-            
-              expect(response.status).to.eq(400)
-         
-
-        }
-
-        )
-    }
-    )
+        createOrg(requestBody1).then((response) => {
+            expect(response.status).to.eq(400);
+            //signupToken=response.body.token // Adjust the expected status code as needed
+            cy.log(response.body);
+        });
+    })
      //Testing create organization input data address length
      it("Testing create organization input data address length",()=>{
-        cy.request(
-            {
-                method: 'Post',
-                url: constants.url+constants.createOrg,
-                failOnStatusCode: false,
-                body: requestBody2
-            }
-        ).then((response)=>{
-            
-              expect(response.status).to.eq(400)
-         
-                
-        }
-
-        )
+        createOrg(requestBody2).then((response) => {
+            expect(response.status).to.eq(400);
+            //signupToken=response.body.token // Adjust the expected status code as needed
+            cy.log(response.body);
+        });
     }
     )
    //Testing create organization input data description length
    it("Testing create organization input data description length",()=>{
-    cy.request(
-        {
-            method: 'Post',
-            url: constants.url+constants.createOrg,
-            failOnStatusCode: false,
-            body: requestBody3
-        }
-    ).then((response)=>{
-        
-          expect(response.status).to.eq(400)
-     
-
-    }
-
-    )
+    createOrg(requestBody3).then((response) => {
+        expect(response.status).to.eq(400);
+        //signupToken=response.body.token // Adjust the expected status code as needed
+        cy.log(response.body);
+    });
 }
 )
 //Testing create organization input data email length
 it("Testing create organization input data email length",()=>{
-    cy.request(
-        {
-            method: 'Post',
-            url: constants.url+constants.createOrg,
-            failOnStatusCode: false,
-            body: requestBody4
-        }
-    ).then((response)=>{
-        
-          expect(response.status).to.eq(400)
-     
-
-    }
-
-    )
+    createOrg(requestBody4).then((response) => {
+        expect(response.status).to.eq(400);
+        //signupToken=response.body.token // Adjust the expected status code as needed
+        cy.log(response.body);
+    });
 }
 )
- 
+ //Testing create organization input data user email length
+it("Testing create organization input data user email length",()=>{
+    createOrg(requestBody7).then((response) => {
+        expect(response.status).to.eq(400);
+        //signupToken=response.body.token // Adjust the expected status code as needed
+        cy.log(response.body);
+    });
+}
+)
 //Testing create organization input data name length
-it("Testing create organization input data name length",()=>{
-    cy.request(
-        {
-            method: 'Post',
-            url: constants.url+constants.createOrg,
-            failOnStatusCode: false,
-            body: requestBody5
-        }
-    ).then((response)=>{
-        
-          expect(response.status).to.eq(400)
-     
-
-    }
-
-    )
+it("Testing create organization input data name length and input type",()=>{
+    createOrg(requestBody5).then((response) => {
+        expect(response.status).to.eq(400);
+        //signupToken=response.body.token // Adjust the expected status code as needed
+        cy.log(response.body);
+    });
 }
 )
 
 //Testing create organization input data accesstype length
 it("Testing create organization input data accesstype length",()=>{
-    cy.request(
-        {
-            method: 'Post',
-            url: constants.url+constants.createOrg,
-            failOnStatusCode: false,
-            body: requestBody6
-        }
-    ).then((response)=>{
-        
-          expect(response.status).to.eq(400)
-     
-
-    }
-
-    )
+    createOrg(requestBody6).then((response) => {
+        expect(response.status).to.eq(400);
+        //signupToken=response.body.token // Adjust the expected status code as needed
+        cy.log(response.body);
+    });
 }
 )
 
@@ -200,6 +164,7 @@ describe('create organization functionality role Test', ()=>{
                 address: "addis ababa",
                 description: "test test",
                 email: faker.internet.email(),
+                organization_email:faker.internet.email(),
                 name: faker.internet.userName(),
                 phone: "251911121314"
     
@@ -211,6 +176,7 @@ describe('create organization functionality role Test', ()=>{
         address: "addis ababa",
         description: "test test",
         email: faker.internet.email(),
+        organization_email:faker.internet.email(),
         name: faker.internet.userName(),
         phone: "251911121314"
     
@@ -221,6 +187,7 @@ describe('create organization functionality role Test', ()=>{
                 address:"Addis Ababa",
                 description: "test test",
                 email: faker.internet.email(),
+                organization_email:faker.internet.email(),
                 name: faker.internet.userName(),
                 phone: "251911121318"
     
@@ -232,6 +199,7 @@ describe('create organization functionality role Test', ()=>{
                 address:"Addis Ababa",
                 description: "test test",
                 email: faker.internet.email(),
+                organization_email:faker.internet.email(),
                 name: faker.internet.userName(),
                 phone: "251911121318"
     
@@ -239,79 +207,39 @@ describe('create organization functionality role Test', ()=>{
    
 
 //Testing create organization with client
-it("create organization functionality role Test",()=>{
-    cy.request(
-        {
-            method: 'Post',
-            url: constants.url+constants.createOrg,
-            failOnStatusCode: false,
-            body: requestBody1
-        }
-    ).then((response)=>{
-        
-          expect(response.status).to.eq(200)
-     
-
-    }
-
-    )
+it("create organization functionality role Test Client",()=>{
+    createOrg(requestBody1).then((response) => {
+        expect(response.status).to.eq(200);
+        //signupToken=response.body.token // Adjust the expected status code as needed
+        cy.log(response.body);
+    });
 }
 )
 //Testing create organization with firm
-it("create organization functionality role Test",()=>{
-    cy.request(
-        {
-            method: 'Post',
-            url: constants.url+constants.createOrg,
-            failOnStatusCode: false,
-            body: requestBody2
-        }
-    ).then((response)=>{
-        
-          expect(response.status).to.eq(200)
-     
-
-    }
-
-    )
+it("create organization functionality role Test Firm",()=>{
+    createOrg(requestBody2).then((response) => {
+        expect(response.status).to.eq(201);
+        //signupToken=response.body.token // Adjust the expected status code as needed
+        cy.log(response.body);
+    });
 }
 )
 //Testing create organization with main
-it("create organization functionality role Test",()=>{
-    cy.request(
-        {
-            method: 'Post',
-            url: constants.url+constants.createOrg,
-            failOnStatusCode: false,
-            body: requestBody3
-        }
-    ).then((response)=>{
-        
-          expect(response.status).to.eq(400)
-     
-
-    }
-
-    )
+it("create organization functionality role Test Main",()=>{
+    createOrg(requestBody3).then((response) => {
+        expect(response.status).to.eq(400);
+        //signupToken=response.body.token // Adjust the expected status code as needed
+        cy.log(response.body);
+    });
 }
 )
-//Testing create organization with main
-it("create organization functionality role Test",()=>{
-    cy.request(
-        {
-            method: 'Post',
-            url: constants.url+constants.createOrg,
-            failOnStatusCode: false,
-            body: requestBody4
-        }
-    ).then((response)=>{
-        
-          expect(response.status).to.eq(400)
-     
-
-    }
-
-    )
+//Testing create organization with observer
+it("create organization functionality role Test Obsever",()=>{
+    createOrg(requestBody4).then((response) => {
+        expect(response.status).to.eq(400);
+        //signupToken=response.body.token // Adjust the expected status code as needed
+        cy.log(response.body);
+    });
 }
 )
 }
@@ -329,6 +257,7 @@ describe('create organization functionality testing unique name, email, phone', 
                 address: "addis ababa",
                 description: "test test",
                 email: faker.internet.email(),
+                organization_email:faker.internet.email(),
                 name: "chapa",
                 phone: "251911121314"
     
@@ -341,6 +270,7 @@ describe('create organization functionality testing unique name, email, phone', 
         description: "test test",
         email: "chapa@gmail.com",
         name: faker.internet.userName(),
+        organization_email:faker.internet.email(),
         phone: "251911121314"
     
     }
@@ -349,8 +279,20 @@ describe('create organization functionality testing unique name, email, phone', 
                 accesstype: "Client",
                 address:"Addis Ababa",
                 description: "test test",
+                organization_email:faker.internet.email(),
                 email: faker.internet.email(),
                 name: faker.internet.userName(),
+                phone: "251911121314"
+    
+    }
+    const requestBody4= 
+    {
+                accesstype: "Client",
+                address:"Addis Ababa",
+                description: "test test",
+                organization_email: "chapaadmin@gmail.com",
+                email: faker.internet.email(),
+                name:faker.internet.name,
                 phone: "251911121314"
     
     }
@@ -360,59 +302,38 @@ describe('create organization functionality testing unique name, email, phone', 
 
 //Testing create organization for unique name with repeated name
 it("Testing create organization for unique name with repeated name",()=>{
-    cy.request(
-        {
-            method: 'Post',
-            url: constants.url+constants.createOrg,
-            failOnStatusCode: false,
-            body: requestBody1
-        }
-    ).then((response)=>{
-        
-          expect(response.status).to.eq(403)
-     
-
-    }
-
-    )
+    createOrg(requestBody1).then((response) => {
+        expect(response.status).to.eq(403);
+        //signupToken=response.body.token // Adjust the expected status code as needed
+        cy.log(response.body);
+    });
 }
 )
 //Testing create organization for unique email with repeated email
 it("Testing create organization for unique email with repeated email",()=>{
-    cy.request(
-        {
-            method: 'Post',
-            url: constants.url+constants.createOrg,
-            failOnStatusCode: false,
-            body: requestBody2
-        }
-    ).then((response)=>{
-        
-          expect(response.status).to.eq(403)
-     
-
-    }
-
-    )
+    createOrg(requestBody2).then((response) => {
+        expect(response.status).to.eq(403);
+        //signupToken=response.body.token // Adjust the expected status code as needed
+        cy.log(response.body);
+    });
+}
+)
+//Testing create organization for unique user email with repeated email
+it("Testing create organization for unique user email with repeated email",()=>{
+    createOrg(requestBody4).then((response) => {
+        expect(response.status).to.eq(403);
+       // //signupToken=response.body.token // Adjust the expected status code as needed
+        cy.log(response.body);
+    });
 }
 )
 //Testing create organization for unique phone with repeated phone
 it("Testing create organization for unique phone with repeated phone",()=>{
-    cy.request(
-        {
-            method: 'Post',
-            url: constants.url+constants.createOrg,
-            failOnStatusCode: false,
-            body: requestBody3
-        }
-    ).then((response)=>{
-        
-          expect(response.status).to.eq(403)
-     
-
-    }
-
-    )
+    createOrg(requestBody3).then((response) => {
+        expect(response.status).to.eq(403);
+        ////signupToken=response.body.token // Adjust the expected status code as needed
+        cy.log(response.body);
+    });
 }
 )
 

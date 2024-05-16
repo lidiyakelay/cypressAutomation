@@ -1,5 +1,8 @@
 import * as constants from "../../../constants.js";
 import { faker } from '@faker-js/faker';
+import { createOrg, signup } from '../../../const_functions/const_functions.cy.js'
+
+
 
 function getSessionValue(cookies, cookieName) {
     for (let i = 0; i < cookies.length; i++) {
@@ -20,6 +23,7 @@ function getSessionValue(cookies, cookieName) {
 describe('Signup as client', ()=>{
     let useremail= faker.internet.email()
     let username= faker.internet.userName()
+    let orgemail= faker.internet.email()
     let signupToken
     const requestBody1= 
     {
@@ -32,25 +36,21 @@ describe('Signup as client', ()=>{
                     address: "addis ababa",
                     description: "test test",
                     email: useremail,
+                    organization_email:orgemail,
                     name: username,
                     phone: "251999887766"
         
         }
     before('Create organization as client', () => {
         
-       
-             cy.request({
-            method: 'POST',
-            url: constants.url + constants.createOrg,
-            body: requestBody
-        
-        }).then((response) => {
+        createOrg(requestBody).then((response) => {
             expect(response.status).to.eq(200);
-            signupToken= response.body.token
-            cy.log(signupToken)
+            signupToken=response.body.token // Adjust the expected status code as needed
+            cy.log(response.body);
+    });})
+ 
+  
 
-        });
-    });
     it("Testing clinet signup",()=>{
         cy.request(
             {
@@ -79,12 +79,15 @@ describe('Testing signup for input validation  input length', ()=>{
     let signupToken
     let useremail= faker.internet.email()
     let username= faker.internet.userName()
+    let orgemail= faker.internet.email()
+
     const requestBody= 
         {
                     accesstype: "Client",
                     address: "addis ababa",
                     description: "test test",
                     email: useremail,
+                    organization_email:orgemail,
                     name: username,
                     phone: "251999887766"
         
@@ -100,21 +103,13 @@ describe('Testing signup for input validation  input length', ()=>{
         password: ""
     }
 //Testing create organization input data 
-before('creating organization', () => {
+beforeEach('creating organization', () => {
         
-       
-    cy.request({
-   method: 'POST',
-   url: constants.url + constants.createOrg,
-   body: requestBody
-
-}).then((response) => {
-   expect(response.status).to.eq(200);
-   signupToken= response.body.token
-   cy.log(signupToken)
-
-});
-});
+    createOrg(requestBody).then((response) => {
+        expect(response.status).to.eq(200);
+        signupToken=response.body.token // Adjust the expected status code as needed
+        cy.log(response.body);
+});})
 it("//Testing create organization input data username with invalid length",()=>{
     cy.request(
         {
@@ -156,6 +151,7 @@ it("//Testing create organization input data username with invalid length",()=>{
 //Testing signup for input validation unique username
 describe('Testing signup for input validation unique username', ()=>{
     let signupToken
+    let orgemail= faker.internet.email()
     let useremail= faker.internet.email()
     let username= faker.internet.userName()
     const requestBody= 
@@ -164,6 +160,7 @@ describe('Testing signup for input validation unique username', ()=>{
                     address: "addis ababa",
                     description: "test test",
                     email: useremail,
+                    organization_email:orgemail,
                     name: username,
                     phone: "251999887766"
         
@@ -177,19 +174,14 @@ describe('Testing signup for input validation unique username', ()=>{
 //Testing create organization input data unique username
 before('creating organization', () => {
         
+            
        
-    cy.request({
-   method: 'POST',
-   url: constants.url + constants.createOrg,
-   body: requestBody
+    createOrg(requestBody).then((response) => {
+        expect(response.status).to.eq(200);
+        signupToken=response.body.token // Adjust the expected status code as needed
+        cy.log(response.body);
+});})
 
-}).then((response) => {
-   expect(response.status).to.eq(200);
-   signupToken= response.body.token
-   cy.log(signupToken)
-
-});
-});
 it("//Testing create organization input data username with existing user name",()=>{
     cy.request(
         {
@@ -221,12 +213,14 @@ describe('Testing create organization input data Strong password', ()=>{
     let signupToken
     let useremail= faker.internet.email()
     let username= faker.internet.userName()
+    let orgemail= faker.internet.email()
     const requestBody= 
         {
                     accesstype: "Client",
                     address: "addis ababa",
                     description: "test test",
                     email: useremail,
+                    organization_email:orgemail,
                     name: username,
                     phone: "251999887766"
         
@@ -241,18 +235,11 @@ describe('Testing create organization input data Strong password', ()=>{
 before('creating organization', () => {
         
        
-    cy.request({
-   method: 'POST',
-   url: constants.url + constants.createOrg,
-   body: requestBody
-
-}).then((response) => {
-   expect(response.status).to.eq(200);
-   signupToken= response.body.token
-   cy.log(signupToken)
-
-});
-});
+    createOrg(requestBody).then((response) => {
+        expect(response.status).to.eq(200);
+        signupToken=response.body.token // Adjust the expected status code as needed
+        cy.log(response.body);
+});})
 it("//Testing create organization input data password with weak password",()=>{
     cy.request(
         {
@@ -283,12 +270,16 @@ describe('Testing create organization token', ()=>{
     let signupToken
     let useremail= faker.internet.email()
     let username= faker.internet.userName()
+    let orgemail= faker.internet.email()
+
+    
     const requestBody= 
         {
             accesstype: "Client",
             address: "addis ababa",
             description: "test test",
             email: useremail,
+            organization_email:orgemail,
             name: username,
             phone: "251999887766"
         
@@ -300,28 +291,23 @@ describe('Testing create organization token', ()=>{
     }
    
 
-before('creating organization', () => {
-        
-       
-    cy.request({
-   method: 'POST',
-   url: constants.url + constants.createOrg,
-   body: requestBody
+//Testing create organization with firm
+before("create organization functionality role Test Firm",()=>{
+    createOrg(requestBody).then((response) => {
+        expect(response.status).to.eq(200);
+        signupToken=response.body.token // Adjust the expected status code as needed
+        cy.log(response.body);
+        cy.request(
+            {
+                method: 'Post',
+                url: constants.url+constants.signup+"/"+signupToken,
+                failOnStatusCode: false,
+                body: requestBody1
+            })
+    });
+}
+)
 
-}).then((response) => {
-   expect(response.status).to.eq(200);
-   signupToken= response.body.token
-   cy.request(
-    {
-        method: 'Post',
-        url: constants.url+constants.signup+"/"+signupToken,
-        failOnStatusCode: false,
-        body: requestBody1
-    })
-   cy.log(signupToken)
-
-});
-});
 it("//Testing create organization token validation",()=>{
     cy.request(
         {
@@ -362,6 +348,8 @@ describe('Signup as Firm', ()=>{
     let authToken = null;
     let signupToken
     let useremail= faker.internet.email()
+    let orgemail= faker.internet.email()
+
     let username= faker.internet.userName()
     const requestBody1= 
     {
@@ -374,31 +362,26 @@ describe('Signup as Firm', ()=>{
                     address: "addis ababa",
                     description: "test test",
                     email: useremail,
+            organization_email:orgemail,
                     name: username,
                     phone: "251999880766"
         
         }
         const requestBody2= 
         {
-            username: "Main",
+            username: "Scarlett.Ryan",
             password: "!QAZxsw2"
         }
-    before('Create organization as Firm', () => {
-        
-       
-             cy.request({
-            method: 'POST',
-            url: constants.url + constants.createOrg,
-            body: requestBody
-        
-        }).then((response) => {
-            cy.log(useremail)
-            expect(response.status).to.eq(200);
-            signupToken= response.body.token
-            cy.log(signupToken)
-
-        });
+    //Testing create organization with firm
+before("create organization functionality role Test Firm",()=>{
+    createOrg(requestBody).then((response) => {
+        expect(response.status).to.eq(201);
+        signupToken=response.body.token // Adjust the expected status code as needed
+        cy.log(response.body);
+        cy.log(username)
     });
+}
+)
     
     before('Login as admin', () => {
         cy.request({
@@ -411,7 +394,7 @@ describe('Signup as Firm', ()=>{
             // Extract the session cookie value from the headers
             const cookies = response.headers['set-cookie'];
             const sessionCookie = getSessionValue(cookies, 'session');
-            authToken=sessionCookie
+         //   authToken=sessionCookie
             // Log the session cookie value
             cy.log(sessionCookie);
             expect(response.status).to.eq(200);
@@ -430,6 +413,7 @@ describe('Signup as Firm', ()=>{
               expect(response.status).to.eq(200)
               totalpage= response.body.total_pages
               for(let i=1; i <= totalpage; i++ ) {
+                cy.log(totalpage)
                 cy.request(
                     {
                         method: 'Get',
@@ -438,10 +422,15 @@ describe('Signup as Firm', ()=>{
                     }
                 ).then((response)=>{
                     expect(response.status).to.eq(200)
-                    for(let j=0; j < 10; j++ ){
+                    for(let j=0; j<response.body.firms.length; j++ ){
+                        cy.log(constants.url+constants.firmPage+"/"+i)
+                        cy.log(response.body.firms.length)
+                        cy.log(j)
+                        cy.log(useremail)
+                        cy.log(response.body.firms[j].email)
                         if(response.body.firms[j].email==useremail){
                             orgID=response.body.firms[j].id
-                            cy.log(response.body.firms[j].id)
+                            cy.log(response.body.firms[j].id+"/////////////////////////////////////")
                             break
     
                             

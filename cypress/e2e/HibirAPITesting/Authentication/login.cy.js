@@ -4,7 +4,7 @@ import * as constants from "../../../constants.js";
 describe('Login input data schema validation', ()=>{
     const requestBody1= 
     {
-        username: "client_user",
+        username: "ClientUser",
         password: "12345"
     }
     const requestBody2= 
@@ -14,7 +14,7 @@ describe('Login input data schema validation', ()=>{
     }
     const requestBody3= 
     {
-        username: "client_user",
+        username: "ClientUser",
         password: "!QAZxsw2"
     }
     const requestBody4= 
