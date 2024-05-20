@@ -20,11 +20,20 @@ function getSessionValue(cookies, cookieName) {
 
 //Create Main Admin
 describe('Create Main Admin ', ()=>{
+    let session
     let name="INSA"
     let orgemail= faker.internet.email()
     let adminemail= faker.internet.email()
+    let methodologyname = faker.internet.userName()
 
     let signupToken
+   const requestBody3= {
+        "code":1,
+        "description": "loreum epsom",
+        "name": methodologyname,
+        "visibility": constants.publicVisibility
+       
+      }
     const requestBody1= constants.mainAdmin
     
     const requestBody= 
@@ -33,7 +42,7 @@ describe('Create Main Admin ', ()=>{
                     address: "addis ababa",
                     description: "test test",
                     email: adminemail,
-                    organization_email:orgemail,
+                    organization_email:'test@g.com',
                     name: name,
                     phone: "251999887766"
         
@@ -66,6 +75,36 @@ describe('Create Main Admin ', ()=>{
         )
     }
     )
+    it("Login as main", ()=>{
+        login(requestBody1).then((response)=>{
+        expect(response.status).to.eq(200);
+        cy.log(response.body);
+        const cookies = response.headers['set-cookie'];
+        session = getSessionValue(cookies, 'session');
+        cy.setCookie('session', session);
+        //const sessionCookie = getSessionValue(cookies, 'session');
+
+        })
+    })
+    it("Testing create public methodologies for Main Admin ",()=>{
+        cy.request(
+            {
+                method: 'POST',
+                url: constants.url+constants.createmethodology,
+                failOnStatusCode: false,
+                body:requestBody3,
+                 headers: {
+                    'Cookie': 'session=' + session
+                }
+                
+            }
+        ).then((response)=>{
+              expect(response.status).to.eq(201)
+        }
+
+        )
+    }
+    )
     
 })
 //
@@ -79,6 +118,15 @@ describe('Create main User ', ()=>{
     let signupToken
     const requestBody1= constants.mainUser
     const requestBody=  constants.mainAdmin
+    let methodologyname = faker.internet.userName()
+
+   const requestBody3= {
+        "code":1,
+        "description": "loreum epsom",
+        "name": methodologyname,
+        "visibility": constants.privateVisibility
+       
+      }
    
 
   
@@ -128,6 +176,36 @@ describe('Create main User ', ()=>{
               expect(response.status).to.eq(200)
               
                 
+        }
+
+        )
+    }
+    )
+    it("Login as main user", ()=>{
+        login(requestBody1).then((response)=>{
+        expect(response.status).to.eq(200);
+        cy.log(response.body);
+        const cookies = response.headers['set-cookie'];
+        session = getSessionValue(cookies, 'session');
+        cy.setCookie('session', session);
+        //const sessionCookie = getSessionValue(cookies, 'session');
+
+        })
+    })
+    it("Testing create public methodologies for main User ",()=>{
+        cy.request(
+            {
+                method: 'POST',
+                url: constants.url+constants.createmethodology,
+                failOnStatusCode: false,
+                body:requestBody3,
+                headers: {
+                    'Cookie': 'session=' + session
+                }
+                
+            }
+        ).then((response)=>{
+              expect(response.status).to.eq(201)
         }
 
         )
@@ -263,16 +341,31 @@ describe('Create client User ', ()=>{
 //
 //create firm admin
 describe('Signup as Firm', ()=>{
+    let session
     let totalpage
     let orgID
     let signupToken
     let adminemail= faker.internet.email()
+    let methodologyname = faker.internet.userName()
 
     let orgemail= faker.internet.email()
 
     let name= 'pentesting firm'
     const requestBody1= constants.firmAdmin
-   
+    const requestBody3= {
+        "code":1 ,
+        "description": "loreum epsom",
+        "name": methodologyname,
+        "visibility": constants.protectedVisibility
+       
+      }
+      const requestBody4= {
+        "code":1 ,
+        "description": "loreum epsom",
+        "name": faker.internet.userName(),
+        "visibility": constants.protectedVisibility
+       
+      }
     const requestBody= 
         {
                     accesstype: "Firm",
@@ -406,7 +499,98 @@ before("create organization functionality role Test Firm",()=>{
 
         )
     }
-    )})
+    )
+    it("Login as firm user", ()=>{
+        login(requestBody1).then((response)=>{
+        expect(response.status).to.eq(200);
+        cy.log(response.body);
+        const cookies = response.headers['set-cookie'];
+        
+        session = getSessionValue(cookies, 'session');
+        cy.setCookie('session', session);
+        //const sessionCookie = getSessionValue(cookies, 'session');
+
+        })
+    })
+    it("Testing create public methodologies for firm User ",()=>{
+        cy.request(
+            {
+                method: 'POST',
+                url: constants.url+constants.createmethodology,
+                failOnStatusCode: false,
+                body:requestBody3,
+                headers: {
+                    'Cookie': 'session=' + session
+                }
+                
+            }
+        ).then((response)=>{
+              expect(response.status).to.eq(201)
+        }
+
+        )
+    }
+    )
+    it("Testing create public methodologies for firm User ",()=>{
+        cy.request(
+            {
+                method: 'POST',
+                url: constants.url+constants.createmethodology,
+                failOnStatusCode: false,
+                body:requestBody4,
+                headers: {
+                    'Cookie': 'session=' + session
+                }
+                
+            }
+        ).then((response)=>{
+              expect(response.status).to.eq(201)
+        }
+
+        )
+    }
+    )
+    it("Testing create public methodologies for firm User ",()=>{
+        cy.request(
+            {
+                method: 'POST',
+                url: constants.url+constants.createmethodology,
+                failOnStatusCode: false,
+                body:requestBody4,
+                headers: {
+                    'Cookie': 'session=' + session
+                }
+                
+            }
+        ).then((response)=>{
+              expect(response.status).to.eq(201)
+        }
+
+        )
+    }
+    )
+    it("Testing create public methodologies for firm User ",()=>{
+        cy.request(
+            {
+                method: 'POST',
+                url: constants.url+constants.createmethodology,
+                failOnStatusCode: false,
+                body:requestBody4,
+                headers: {
+                    'Cookie': 'session=' + session
+                }
+                
+            }
+        ).then((response)=>{
+              expect(response.status).to.eq(201)
+        }
+
+        )
+    }
+    )
+
+
+})
      
 //
 //

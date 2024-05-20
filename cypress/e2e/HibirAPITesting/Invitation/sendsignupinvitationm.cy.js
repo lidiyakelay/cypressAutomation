@@ -19,11 +19,7 @@ function getSessionValue(cookies, cookieName) {
 //Testing sending signup invitation from super admin 
 describe('Testing ssending signup invitation from super admin ', ()=>{
     const email=faker.internet.email()
-    const requestBody1= 
-    {
-        username: "Main",
-        password: "!QAZxsw2"
-    }
+    const requestBody1= constants.mainAdmin
     const requestBody2= 
     {
         email: email ,

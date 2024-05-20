@@ -18,15 +18,14 @@ function getSessionValue(cookies, cookieName) {
     return null;
 }
 
-//* / Testing Create user info functionality for client
-describe('Testing creating user info functionality for client ', () => {
+//* / Testing update user info functionality for client
+describe('Testing update user info functionality for client ', () => {
     let adminemail= faker.internet.email()
-    let useremail= faker.internet.email()
     let orgemail= faker.internet.email()
-    let username= faker.internet.userName()
-    let adminname= faker.internet.userName()
-    let userphone= faker.phone.imei()
+    let newname= faker.internet.userName()
     let name= faker.internet.userName()
+    let adminname= faker.internet.userName()
+    let newphone= faker.phone.imei()
     let signupToken
     let usersignupToken
    let adminphone= faker.phone.imei()
@@ -51,9 +50,9 @@ describe('Testing creating user info functionality for client ', () => {
     const requestBody5={
         
         "address": "addis ababa",
-        "first_name": username,
+        "first_name": newname,
         "last_name": "test",
-        "phone_number": userphone,
+        "phone_number": newphone,
         "preferences": {
           "theme":"string"
       },
@@ -62,24 +61,17 @@ describe('Testing creating user info functionality for client ', () => {
 }
     const requestBody= 
     {
-        accesstype: "Client",
-        address: "addis ababa",
-        description: "test test",
-        email: adminemail,
-        organization_email:orgemail,
-        name: name,
-        phone: adminphone
+                accesstype: "Client",
+                address: "addis ababa",
+                description: "test test",
+                email: adminemail,
+                organization_email:orgemail,
+                name: name,
+                phone: adminphone
     
     }
-    const requestBody3 = {
-        email: useremail,
-       
-    };
-    const requestBody4= {
-        username: username,
-        password: "!QAZxsw2"
-       
-    };
+
+ 
  before('Create organization as client', () => {
     
     createOrg(requestBody).then((response) => {
@@ -88,7 +80,7 @@ describe('Testing creating user info functionality for client ', () => {
         cy.log(response.body);
     });
 });
-before("Testing clinet admin signup",()=>{
+before("clinet admin signup",()=>{
     signup(signupToken,requestBody1).then((response) => {
         expect(response.status).to.eq(200);
         cy.log(response.body);
@@ -104,10 +96,11 @@ before('Login as client admin', () => {
             cy.setCookie('session', session);
     })
     });
-    it('Create user info for client admin',() => {
+it('Create user info for client admin',() => {
 
        createUserInfo(requestBody2, session).then((response) => {
         expect(response.status).to.eq(200);
+        cy.log(response.body.first_name)
         cy.log(response.body);
     })
   
@@ -116,50 +109,27 @@ before('Login as client admin', () => {
       
 
     )
-    it("sending signup invitation from client admin with valid email and authorization",()=>{
+    it("Testing updating user info as client admin",()=>{
         cy.request(
             {
-                method: 'Post',
-                url: constants.url+constants.sendsignupinvitationclient,
+                method: 'PUT',
+                url: constants.url+constants.updateProfile,
                 failOnStatusCode: false,
-                body:requestBody3,
+                body:requestBody5,
                 headers: {
                     'Cookie': 'session=' + session
                 }
                 
             }
         ).then((response)=>{
-             cy.log(response.body.token)
+             cy.log(response.body.first_name)
               expect(response.status).to.eq(200)
-              usersignupToken=response.body.token
         }
 
         )
     }
     )
-    it("Testing clinet signup",()=>{
-        signup(usersignupToken,requestBody4).then((response) => {
-            expect(response.status).to.eq(200);
-            cy.log(response.body);
-        })
-    }
-    ) 
-    it('Login as client', () => {
-        login(requestBody4).then((response) => {
-            expect(response.status).to.eq(200);
-            cy.log(response.body);
-           const cookies = response.headers['set-cookie'];
-                session = getSessionValue(cookies, 'session');
-                cy.setCookie('session', session);
-        })
-        });
-    it('Create user info for client user', () => {
-
-        createUserInfo(requestBody5,session).then((response) => {
-            expect(response.status).to.eq(200);
-            cy.log(response.body);
-          
-        }) })
+    
     
 });
 
@@ -167,36 +137,24 @@ before('Login as client admin', () => {
 //
 //
 //
-//Testing create user profile for Firm
-describe('Testing create user profile for Firm', ()=>{
+//Testing update user profile for Firm admin
+describe('Testing update user profile for Firm admin', ()=>{
     let totalpage
     let orgID
     let authToken = null;
     let signupToken
     let session
-    let usersignupToken
-    let name= faker.internet.userName()
-    let useremail= faker.internet.email()
     let orgemail= faker.internet.email()
     let adminemail= faker.internet.email() 
-    let username= faker.internet.userName()
-    let userphone= faker.phone.imei()
+    let newname= faker.internet.userName()
+    let name= faker.internet.userName()
+    let newphone= faker.phone.imei()
     let adminphone= faker.phone.imei()
     let adminname=faker.internet.userName()
 
     
 
-
-    const requestBody4= 
-    {
-        username: username,
-        password: "!QAZxsw2"
-    }
-    const requestBody5= 
-    {
-        email: useremail,
-        
-    }
+  
     const requestBody1= 
     {
         username: adminname,
@@ -214,12 +172,12 @@ describe('Testing create user profile for Firm', ()=>{
         "profile_picture": "string"
       
 }
-const requestBody6={
+const requestBody5={
         
     "address": "addis ababa",
-    "first_name": username,
+    "first_name": newname,
     "last_name": "test",
-    "phone_number": userphone,
+    "phone_number": newphone,
     "preferences": {
       "theme":"string"
   },
@@ -245,7 +203,6 @@ before("create organization functionality role Test Firm",()=>{
         expect(response.status).to.eq(201);
         signupToken=response.body.token // Adjust the expected status code as needed
         cy.log(response.body);
-        cy.log(username)
     });
 }
 )
@@ -334,24 +291,10 @@ before("create organization functionality role Test Firm",()=>{
     }
     )
     
-    it("Testing signup as firm",()=>{
-        cy.request(
-            {
-                method: 'Post',
-                url: constants.url+constants.signup+"/"+signupToken,
-                failOnStatusCode: false,
-                body: requestBody1
-            }
-        ).then((response)=>{
-              cy.log(response.body)
-              expect(response.status).to.eq(200)
-              
-                
-        }
-
-        )
-    }
-    )
+    signup(signupToken,requestBody1).then((response) => {
+        expect(response.status).to.eq(200);
+        cy.log(response.body);
+    })
     it('Login as firm admin', () => {
         login(requestBody1).then((response) => {
             expect(response.status).to.eq(200);
@@ -368,11 +311,11 @@ before("create organization functionality role Test Firm",()=>{
                 cy.log(response.body);
               
             }) })
-       it("sending signup invitation from firm admin with valid email and authorization",()=>{
+   it("Testing updating user info as firm admin",()=>{
                 cy.request(
                     {
-                        method: 'Post',
-                        url: constants.url+constants.sendsignupinvitationfirm,
+                        method: 'PUT',
+                        url: constants.url+constants.updateProfile,
                         failOnStatusCode: false,
                         body:requestBody5,
                         headers: {
@@ -381,36 +324,16 @@ before("create organization functionality role Test Firm",()=>{
                         
                     }
                 ).then((response)=>{
-                     cy.log(response.body.token)
+                     cy.log(response.body.first_name)
+                     cy.log(newname)
                       expect(response.status).to.eq(200)
-                      usersignupToken=response.body.token
                 }
         
                 )
-            })
-            it("Testing firm user signup",()=>{
-                signup(usersignupToken,requestBody4).then((response) => {
-                    expect(response.status).to.eq(200);
-                    cy.log(response.body);
-                })
             }
-            ) 
-            it('Login as firm user', () => {
-                login(requestBody4).then((response) => {
-                    expect(response.status).to.eq(200);
-                    cy.log(response.body);
-                   const cookies = response.headers['set-cookie'];
-                        session = getSessionValue(cookies, 'session');
-                        cy.setCookie('session', session);
-                })
-                });
-            it('Create user info for firm user', () => {
-        
-                createUserInfo(requestBody6,session).then((response) => {
-                    expect(response.status).to.eq(200);
-                    cy.log(response.body);
-                  
-                }) })
+            )
+    
+         
         
 
 
@@ -419,43 +342,22 @@ before("create organization functionality role Test Firm",()=>{
 //
 //
 //
-//Testing create user profile for main
-describe('Testing create user profile for Main', ()=>{
+//Testing update user profile for main
+describe('Testing update user profile for Main admin', ()=>{
     let session
-    let usersignupToken
-    let useremail= faker.internet.email()
-    let username= faker.internet.userName()
-    let adminname= faker.internet.userName()
+    let newname= faker.internet.userName()
 
-   let userphone= faker.phone.imei()
-   let adminphone= faker.phone.imei()
+   let newphone= faker.phone.imei()
 
     const requestBody= constants.mainAdmin
-    const requestBody2={
-        email:useremail
-    }
-    const requestBody3={
-        username: username,
-        password:'!QAZxsw2'
-    }
-    const requestBody1={
-        
-        "address": "addis ababa",
-        "first_name": adminname,
-        "last_name": "test",
-        "phone_number": adminphone,
-        "preferences": {
-          "theme":"string"
-      },
-        "profile_picture": "string"
-      
-    }
+    
+  
     const requestBody4={
         
         "address": "addis ababa",
-        "first_name": username,
+        "first_name": newname,
         "last_name": "test",
-        "phone_number": userphone,
+        "phone_number": newphone,
         "preferences": {
           "theme":"string"
       },
@@ -472,56 +374,29 @@ describe('Testing create user profile for Main', ()=>{
                 cy.setCookie('session', session);
         })
         })
-    it('Create user info for Main Admin', () => {
-            createUserInfo(requestBody1,session).then((response) => {
-                expect(response.status).to.eq(200);
-                cy.log(response.body);
-              
-            }) })
-    it("sending signup invitation from main admin with valid email and authorization",()=>{
-                cy.request(
-                    {
-                        method: 'Post',
-                        url: constants.url+constants.sendsignupinvitationm,
-                        failOnStatusCode: false,
-                        body:requestBody2,
-                        headers: {
-                            'Cookie': 'session=' + session
-                        }
-                        
+ 
+        it("Testing updating user info as main admin",()=>{
+            cy.request(
+                {
+                    method: 'PUT',
+                    url: constants.url+constants.updateProfile,
+                    failOnStatusCode: false,
+                    body:requestBody4,
+                    headers: {
+                        'Cookie': 'session=' + session
                     }
-                ).then((response)=>{
-                     cy.log(response.body.token)
-                      expect(response.status).to.eq(200)
-                      usersignupToken=response.body.token
+                    
                 }
-        
-                )
-            })
-         it("Testing main user signup",()=>{
-                signup(usersignupToken,requestBody3).then((response) => {
-                    expect(response.status).to.eq(200);
-                    cy.log(response.body);
-                })
+            ).then((response)=>{
+                 cy.log(response.body.first_name)
+                 cy.log(newname)
+                  expect(response.status).to.eq(200)
             }
-            ) 
-     it('Login as main user', () => {
-                login(requestBody3).then((response) => {
-                    expect(response.status).to.eq(200);
-                    cy.log(response.body);
-                   const cookies = response.headers['set-cookie'];
-                        session = getSessionValue(cookies, 'session');
-                        cy.setCookie('session', session);
-                })
-                });
-     it('Create user info for main user', () => {
-        
-                    createUserInfo(requestBody4,session).then((response) => {
-                        expect(response.status).to.eq(200);
-                        cy.log(response.body);
-                      
-                    }) })
     
+            )
+        }
+        )
+        
 
 
 }
@@ -534,212 +409,43 @@ describe('Testing create user profile for Main', ()=>{
 //
 //
 //
-//testing input length validation for create user info for first name
-describe('Testing input length validation for create user info for first name input length and type',()=>{
+//testing input length validation for update user info for first name
+describe('Testing input length validation for update user info for first name input length and type',()=>{
     let useremail= faker.internet.email()
     let username= faker.internet.userName()
+    let newname= faker.internet.userName()
+    let phone=  faker.phone.imei()
     let session
     let usersignupToken
-const requestBody1={
-        
-    "address": "addis ababa",
-    "first_name": "1",
-    "last_name": "test",
-    "phone_number": "0911121314",
-    "preferences": {
-      "theme":"string"
-  },
-    "profile_picture": "string"
-  
-}
-
-
-
-
-const requestBody= constants.mainAdmin
-const requestBody5= {
-    email: useremail
-}
-const requestBody6= {
-    username:username,
-    password:'!QAZxsw2'
-}
-before('Login as mainadmin', () => {
-    login(requestBody).then((response) => {
-        expect(response.status).to.eq(200);
-        cy.log(response.body);
-       const cookies = response.headers['set-cookie'];
-            session = getSessionValue(cookies, 'session');
-            cy.setCookie('session', session);
-    })
-    })
-
-it("sending signup invitation from firm admin with valid email and authorization",()=>{
-            cy.request(
-                {
-                    method: 'Post',
-                    url: constants.url+constants.sendsignupinvitationm,
-                    failOnStatusCode: false,
-                    body:requestBody5,
-                    headers: {
-                        'Cookie': 'session=' + session
-                    }
-                    
-                }
-            ).then((response)=>{
-                 cy.log(response.body.token)
-                  expect(response.status).to.eq(200)
-                  usersignupToken=response.body.token
-            }
-    
-            )
-        })
-     it("main user signup",()=>{
-            signup(usersignupToken,requestBody6).then((response) => {
-                expect(response.status).to.eq(200);
-                cy.log(response.body);
-            })
-        }
-        ) 
- it('Login as main user', () => {
-            login(requestBody6).then((response) => {
-                expect(response.status).to.eq(200);
-                cy.log(response.body);
-               const cookies = response.headers['set-cookie'];
-                    session = getSessionValue(cookies, 'session');
-                    cy.setCookie('session', session);
-            })
-            });
-
-
-        it('Create user info for main user with invalid first name', () => {
-               
-                createUserInfo(requestBody1,session).then((response) => {
-                    expect(response.status).to.eq(400);
-                    cy.log(response.body);
-                  
-                }) })
-    
-    
-    
-
-
-})
-
-
-
-//
-//
-//
-//testing input length validation for create user info for last name
-describe('Testing input length validation for create user info for last name input length and type',()=>{
-    let useremail= faker.internet.email()
-    let username= faker.internet.userName()
-    let session
-    let usersignupToken
-
     const requestBody2={
         
         "address": "addis ababa",
-        "first_name": "adam",
-        "last_name": "2",
-        "phone_number": faker.phone.imei(),
-        "preferences": {
-          "theme":"string"
-      },
-        "profile_picture": "string"
-      
-    }
-const requestBody= constants.mainAdmin
-const requestBody5= {
-    email: useremail
-}
-const requestBody6= {
-    username:username,
-    password:'!QAZxsw2'
-}
-before('Login as mainadmin', () => {
-    login(requestBody).then((response) => {
-        expect(response.status).to.eq(200);
-        cy.log(response.body);
-       const cookies = response.headers['set-cookie'];
-            session = getSessionValue(cookies, 'session');
-            cy.setCookie('session', session);
-    })
-    })
-
-it("sending signup invitation from firm admin with valid email and authorization",()=>{
-            cy.request(
-                {
-                    method: 'Post',
-                    url: constants.url+constants.sendsignupinvitationm,
-                    failOnStatusCode: false,
-                    body:requestBody5,
-                    headers: {
-                        'Cookie': 'session=' + session
-                    }
-                    
-                }
-            ).then((response)=>{
-                 cy.log(response.body.token)
-                  expect(response.status).to.eq(200)
-                  usersignupToken=response.body.token
-            }
-    
-            )
-        })
-     it("main user signup",()=>{
-            signup(usersignupToken,requestBody6).then((response) => {
-                expect(response.status).to.eq(200);
-                cy.log(response.body);
-            })
-        }
-        ) 
- it('Login as main user', () => {
-            login(requestBody6).then((response) => {
-                expect(response.status).to.eq(200);
-                cy.log(response.body);
-               const cookies = response.headers['set-cookie'];
-                    session = getSessionValue(cookies, 'session');
-                    cy.setCookie('session', session);
-            })
-            });
-
-
-     
-       it('Create user info for main user with invalid last name', () => {
-               
-                    createUserInfo(requestBody2,session).then((response) => {
-                        expect(response.status).to.eq(400);
-                        cy.log(response.body);
-                      
-                    })})
-
-
-})
-
-//
-//
-//
-//testing create user info for main user with invalid phonenumber
-describe('Testing create user info for main user with invalid phonenumber input length and type',()=>{
-    let useremail= faker.internet.email()
-    let username= faker.internet.userName()
-    let session
-    let usersignupToken
-
-    const requestBody3={
-        
-        "address": "addis ababa",
-        "first_name": "adam",
+        "first_name": username,
         "last_name": "test",
-        "phone_number":"b",
+        "phone_number":phone,
         "preferences": {
           "theme":"string"
       },
         "profile_picture": "string"
       
     }
+
+const requestBody1={
+        
+    "address": "addis ababa",
+    "first_name": "3",
+    "last_name": "test",
+    "phone_number": phone,
+    "preferences": {
+      "theme":"string"
+  },
+    "profile_picture": "string"
+  
+}
+
+
+
+
 const requestBody= constants.mainAdmin
 const requestBody5= {
     email: useremail
@@ -796,41 +502,82 @@ it("sending signup invitation from firm admin with valid email and authorization
             });
 
 
-     
-            it('Create user info for main user with invalid phonenumber', () => {
+        it('Create user info for main user ', () => {
                
-                createUserInfo(requestBody3,session).then((response) => {
-                    expect(response.status).to.eq(400);
+                createUserInfo(requestBody2,session).then((response) => {
+                    expect(response.status).to.eq(200);
                     cy.log(response.body);
                   
                 }) })
+        it("Testing updating user info as main admin with invalid first name",()=>{
+            cy.request(
+                {
+                    method: 'PUT',
+                    url: constants.url+constants.updateProfile,
+                    failOnStatusCode: false,
+                    body:requestBody1,
+                    headers: {
+                        'Cookie': 'session=' + session
+                    }
+                    
+                }
+            ).then((response)=>{
+                 cy.log(response.body.first_name)
+                 cy.log(newname)
+                  expect(response.status).to.eq(400)
+            }
+    
+            )
+        }
+        )
+    
+    
+    
+
 
 })
 
+
+
 //
 //
 //
-//testing input length validation for create user info for faddress
-describe('Testing input length validation for create user info for address',()=>{
+//testing input length validation for update user info for last name
+describe('Testing input length validation for update user info for last name input length and type',()=>{
     let useremail= faker.internet.email()
     let username= faker.internet.userName()
-    let phonenumber=faker.phone.imei()
+    let newname= faker.internet.userName()
+    let phone=  faker.phone.imei()
     let session
     let usersignupToken
-
-
-const requestBody4={
+    const requestBody2={
         
-    "address": "3",
-    "first_name": "adam",
-    "last_name": "test",
-    "phone_number": phonenumber,
+        "address": "addis ababa",
+        "first_name": username,
+        "last_name": "test",
+        "phone_number":phone,
+        "preferences": {
+          "theme":"string"
+      },
+        "profile_picture": "string"
+      
+    }
+
+const requestBody1={
+        
+    "address": "addis ababa",
+    "first_name": newname,
+    "last_name": "3",
+    "phone_number": phone,
     "preferences": {
       "theme":"string"
   },
     "profile_picture": "string"
   
 }
+
+
+
 
 const requestBody= constants.mainAdmin
 const requestBody5= {
@@ -888,38 +635,80 @@ it("sending signup invitation from firm admin with valid email and authorization
             });
 
 
-    
-        it('Create user info for main user with invalid address', () => {
+        it('Create user info for main user ', () => {
                
-                            createUserInfo(requestBody4,session).then((response) => {
-                                expect(response.status).to.eq(400);
-                                cy.log(response.body);
-                              
-                            }) })
-     
+                createUserInfo(requestBody2,session).then((response) => {
+                    expect(response.status).to.eq(200);
+                    cy.log(response.body);
+                  
+                }) })
+        it("Testing updating user info as main admin with invalid last name",()=>{
+            cy.request(
+                {
+                    method: 'PUT',
+                    url: constants.url+constants.updateProfile,
+                    failOnStatusCode: false,
+                    body:requestBody1,
+                    headers: {
+                        'Cookie': 'session=' + session
+                    }
+                    
+                }
+            ).then((response)=>{
+                 cy.log(response.body.first_name)
+                 cy.log(newname)
+                  expect(response.status).to.eq(400)
+            }
+    
+            )
+        }
+        )
     
 
 
 })
-//testing input length validation for create user info with existing phone number
-describe('Testing input length validation for create user info with existing phone number',()=>{
+
+//
+//
+//
+//testing update user info for main user with invalid phonenumber
+describe('Testing update user info for main user with invalid phonenumber input length and type',()=>{
+   
     let useremail= faker.internet.email()
     let username= faker.internet.userName()
+    let newname= faker.internet.userName()
+    let phone=  faker.phone.imei()
     let session
     let usersignupToken
-
-const requestBody7={
+    const requestBody2={
         
-    "address": "address",
-    "first_name": "adam",
+        "address": "addis ababa",
+        "first_name": username,
+        "last_name": "test",
+        "phone_number":phone,
+        "preferences": {
+          "theme":"string"
+      },
+        "profile_picture": "string"
+      
+    }
+
+const requestBody1={
+
+    "address": "addis ababa",
+    "first_name": username,
     "last_name": "test",
-    "phone_number": "0911121314",
+    "phone_number": 'n',
     "preferences": {
       "theme":"string"
   },
     "profile_picture": "string"
   
 }
+
+
+
+
 const requestBody= constants.mainAdmin
 const requestBody5= {
     email: useremail
@@ -975,43 +764,80 @@ it("sending signup invitation from firm admin with valid email and authorization
             })
             });
 
-    
-        it('Create user info for main user with existing phone number', () => {
-               
-                            createUserInfo(requestBody7,session).then((response) => {
-                                expect(response.status).to.eq(400);
-                                cy.log(response.body);
-                              
-                            }) })
-    
 
+        it('Create user info for main user ', () => {
+               
+                createUserInfo(requestBody2,session).then((response) => {
+                    expect(response.status).to.eq(200);
+                    cy.log(response.body);
+                  
+                }) })
+        it("Testing updating user info as main admin with invalid phone",()=>{
+            cy.request(
+                {
+                    method: 'PUT',
+                    url: constants.url+constants.updateProfile,
+                    failOnStatusCode: false,
+                    body:requestBody1,
+                    headers: {
+                        'Cookie': 'session=' + session
+                    }
+                    
+                }
+            ).then((response)=>{
+                 cy.log(response.body.first_name)
+                 cy.log(newname)
+                  expect(response.status).to.eq(400)
+            }
+    
+            )
+        }
+        )
+    
 
 })
 
-
-
 //
 //
 //
-//Testing creating user info from unauthorized user
-describe('Testing creating user info from unauthorized user',()=>{
+//testing input length validation for update user info for faddress
+describe('Testing input length validation for update user info for address',()=>{
+    
     let useremail= faker.internet.email()
     let username= faker.internet.userName()
+    let newname= faker.internet.userName()
+    let phone=  faker.phone.imei()
     let session
     let usersignupToken
-
-const requestBody7={
+    const requestBody2={
         
-    "address": "address",
-    "first_name": "adam",
+        "address": "addis ababa",
+        "first_name": username,
+        "last_name": "test",
+        "phone_number":phone,
+        "preferences": {
+          "theme":"string"
+      },
+        "profile_picture": "string"
+      
+    }
+
+const requestBody1={
+        
+    "address": "9",
+    "first_name": username,
     "last_name": "test",
-    "phone_number":faker.phone.imei(),
+    "phone_number": '0911121314',
     "preferences": {
       "theme":"string"
   },
     "profile_picture": "string"
   
 }
+
+
+
+
 const requestBody= constants.mainAdmin
 const requestBody5= {
     email: useremail
@@ -1057,18 +883,177 @@ it("sending signup invitation from firm admin with valid email and authorization
             })
         }
         ) 
+ it('Login as main user', () => {
+            login(requestBody6).then((response) => {
+                expect(response.status).to.eq(200);
+                cy.log(response.body);
+               const cookies = response.headers['set-cookie'];
+                    session = getSessionValue(cookies, 'session');
+                    cy.setCookie('session', session);
+            })
+            });
 
-    
-        it('Create user info for main user as main admin', () => {
+
+        it('Create user info for main user ', () => {
                
-                            createUserInfo(requestBody7,session).then((response) => {
-                                expect(response.status).to.eq(500);
-                              
-                            }) })
+                createUserInfo(requestBody2,session).then((response) => {
+                    expect(response.status).to.eq(200);
+                    cy.log(response.body);
+                  
+                }) })
+        it("Testing updating user info as main admin with invalid address",()=>{
+            cy.request(
+                {
+                    method: 'PUT',
+                    url: constants.url+constants.updateProfile,
+                    failOnStatusCode: false,
+                    body:requestBody1,
+                    headers: {
+                        'Cookie': 'session=' + session
+                    }
+                    
+                }
+            ).then((response)=>{
+                 cy.log(response.body.first_name)
+                 cy.log(newname)
+                  expect(response.status).to.eq(400)
+            }
+    
+            )
+        }
+        )
+    
+
+})
+//testing input length validation for update user info with existing phone number
+describe('Testing input length validation for update user info with existing phone number',()=>{
+    let useremail= faker.internet.email()
+    let username= faker.internet.userName()
+    let newname= faker.internet.userName()
+    let phone=  faker.phone.imei()
+    let session
+    let usersignupToken
+    const requestBody2={
+        
+        "address": "addis ababa",
+        "first_name": username,
+        "last_name": "test",
+        "phone_number":phone,
+        "preferences": {
+          "theme":"string"
+      },
+        "profile_picture": "string"
+      
+    }
+
+const requestBody1={
+        
+    "address": "addis ababa",
+    "first_name": username,
+    "last_name": "test",
+    "phone_number": '0911121314',
+    "preferences": {
+      "theme":"string"
+  },
+    "profile_picture": "string"
+  
+}
+
+
+
+
+const requestBody= constants.mainAdmin
+const requestBody5= {
+    email: useremail
+}
+const requestBody6= {
+    username:username,
+    password:'!QAZxsw2'
+}
+before('Login as main admin', () => {
+    login(requestBody).then((response) => {
+        expect(response.status).to.eq(200);
+        cy.log(response.body);
+       const cookies = response.headers['set-cookie'];
+            session = getSessionValue(cookies, 'session');
+            cy.setCookie('session', session);
+    })
+    })
+
+it("sending signup invitation from firm admin with valid email and authorization",()=>{
+            cy.request(
+                {
+                    method: 'Post',
+                    url: constants.url+constants.sendsignupinvitationm,
+                    failOnStatusCode: false,
+                    body:requestBody5,
+                    headers: {
+                        'Cookie': 'session=' + session
+                    }
+                    
+                }
+            ).then((response)=>{
+                 cy.log(response.body.token)
+                  expect(response.status).to.eq(200)
+                  usersignupToken=response.body.token
+            }
+    
+            )
+        })
+     it("main user signup",()=>{
+            signup(usersignupToken,requestBody6).then((response) => {
+                expect(response.status).to.eq(200);
+                cy.log(response.body);
+            })
+        }
+        ) 
+ it('Login as main user', () => {
+            login(requestBody6).then((response) => {
+                expect(response.status).to.eq(200);
+                cy.log(response.body);
+               const cookies = response.headers['set-cookie'];
+                    session = getSessionValue(cookies, 'session');
+                    cy.setCookie('session', session);
+            })
+            });
+
+
+        it('Create user info for main user ', () => {
+               
+                createUserInfo(requestBody2,session).then((response) => {
+                    expect(response.status).to.eq(200);
+                    cy.log(response.body);
+                  
+                }) })
+        it("Testing updating user info as main admin with existing phone number",()=>{
+            cy.request(
+                {
+                    method: 'PUT',
+                    url: constants.url+constants.updateProfile,
+                    failOnStatusCode: false,
+                    body:requestBody1,
+                    headers: {
+                        'Cookie': 'session=' + session
+                    }
+                    
+                }
+            ).then((response)=>{
+                 cy.log(newname)
+                  expect(response.status).to.eq(400)
+            }
+    
+            )
+        }
+        )
+    
     
 
 
 })
+
+
+
+
 //
 //
 //
@@ -1076,13 +1061,26 @@ it("sending signup invitation from firm admin with valid email and authorization
 describe('Testing creating user info without logging in',()=>{
     let useremail= faker.internet.email()
     let username= faker.internet.userName()
+    let newname= faker.internet.userName()
     let session
     let usersignupToken
 
 const requestBody7={
         
     "address": "address",
-    "first_name": "adam",
+    "first_name": username,
+    "last_name": "test",
+    "phone_number":faker.phone.imei(),
+    "preferences": {
+      "theme":"string"
+  },
+    "profile_picture": "string"
+  
+}
+const requestBody8={
+        
+    "address": "address",
+    "first_name": newname,
     "last_name": "test",
     "phone_number":faker.phone.imei(),
     "preferences": {
@@ -1137,21 +1135,39 @@ it("sending signup invitation from firm admin with valid email and authorization
         }
         ) 
 
-    
-        it('Test creating user info without logging in', () => {
-               
-            cy.request({
-                method: 'POST',
-                url: constants.url + constants.createUserInfo,
-                failOnStatusCode: false,
-                body: requestBody,
-              
-            }).then((response) => {
-                expect(response.status).to.eq(401)
+        it('Login as main user', () => {
+            login(requestBody6).then((response) => {
+                expect(response.status).to.eq(200);
                 cy.log(response.body);
+               const cookies = response.headers['set-cookie'];
+                    session = getSessionValue(cookies, 'session');
+                    cy.setCookie('session', session);
             })
+            });
+        it('creating user info ', () => {
+               
+            createUserInfo(requestBody7,session).then((response) => {
+                expect(response.status).to.eq(200);
+                cy.log(response.body);
                         
-                        })
+                        })})
+           it("Testing updating user info without logging in",()=>{
+                            cy.request(
+                                {
+                                    method: 'PUT',
+                                    url: constants.url+constants.updateProfile,
+                                    failOnStatusCode: false,
+                                    body:requestBody8,
+                                }
+                            ).then((response)=>{
+                                 cy.log(response.body.first_name)
+                                 cy.log(newname)
+                                  expect(response.status).to.eq(401)
+                            }
+                    
+                            )
+                        }
+                        )
     
 
 

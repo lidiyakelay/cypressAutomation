@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import * as constants from "../../../../constants.js"
+import * as constants from "../../../constants.js"
 
 // Function to extract cookie value based on cookie name
 function getSessionValue(cookies, cookieName) {

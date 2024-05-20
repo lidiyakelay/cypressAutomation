@@ -1,4 +1,4 @@
-import { he } from "@faker-js/faker";
+import { faker } from "@faker-js/faker";
 import * as constants from "../../../../constants.js";
 
 // Function to extract cookie value based on cookie name
@@ -18,10 +18,7 @@ function getSessionValue(cookies, cookieName) {
 // Testing get organization users from admin  for main
 describe(' Testing get organization users from admin  for main', () => {
     
-    const requestBody1 = {
-        username: "Main",
-        password: "!QAZxsw2"}
-   
+    const requestBody1 = constants.mainAdmin
 
         before('Login as admin', () => {
             cy.request({
@@ -64,9 +61,7 @@ describe(' Testing get organization users from admin  for main', () => {
 //
 //Test get organization users from admin  for main with main user
 describe('Test get organization users from admin  for main with main user',()=> {
-        const requestBody2 = {
-            username: "MainUser",
-            password: "!QAZxsw2"}
+        const requestBody2 = constants.mainUser
         before('Login as Main user', () => {
             cy.request({
                 method: 'POST',
@@ -110,9 +105,7 @@ describe('Test get organization users from admin  for main with main user',()=> 
 // Testing get organization users from firm with firm admin
 describe(' Testing get organization users from firm  with firm admin', () => {
     
-    const requestBody1 = {
-        username: "INSATest",
-        password: "!QAZxsw2"}
+    const requestBody1 = constants.firmAdmin
        
 
         before('Login as Firm admin', () => {
@@ -159,9 +152,7 @@ describe(' Testing get organization users from firm  with firm admin', () => {
 // Testing get organization users from firm   with firm user
 describe(' Testing get organization users from firm  with firm user', () => {
  
-        const requestBody1 = {
-            username: "INSAUser",
-            password: "!QAZxsw2"}
+        const requestBody1 = constants.firmUser
 
         before('Login as Firm admin', () => {
             cy.request({
@@ -207,9 +198,7 @@ describe(' Testing get organization users from firm  with firm user', () => {
 // Testing get organization users from client  with client admin
 describe(' Testing get organization users from client  with client admin', () => {
     
-    const requestBody1 = {
-        username: "ArifPayAdmin",
-        password: "!QAZxsw2"}
+    const requestBody1 = constants.clientAdmin
        
 
         before('Login as Firm admin', () => {
@@ -255,9 +244,7 @@ describe(' Testing get organization users from client  with client admin', () =>
 // Testing get organization users from client  with client user
 describe(' Testing get organization users from client  with client user', () => {
     
-    const requestBody1 = {
-        username: "ArifPayUser",
-        password: "!QAZxsw2"}
+    const requestBody1 = constants.clientUser
        
 
         before('Login as Firm admin', () => {

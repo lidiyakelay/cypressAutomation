@@ -9,6 +9,7 @@ describe('create organization input data schema validation', ()=>{
                 address: "addis ababa",
                 description: "test test",
                 email: faker.internet.email(),
+                organization_email:faker.internet.email(),
                 name: faker.internet.userName(),
                 phone: "251911121318"
 
@@ -20,6 +21,8 @@ describe('create organization input data schema validation', ()=>{
                 address: "addis ababa",
                 description: "test test",
                 email: faker.internet.email(),
+                organization_email:faker.internet.email(),
+
                 name: faker.internet.userName(),
                 phone: "251911121318"
 
@@ -30,6 +33,8 @@ describe('create organization input data schema validation', ()=>{
                 address:123456,
                 description: "test test",
                 email: faker.internet.email(),
+                organization_email:faker.internet.email(),
+
                 name: faker.internet.userName(),
                 phone: "251911121318"
 
@@ -40,6 +45,8 @@ describe('create organization input data schema validation', ()=>{
                 address: "addis ababa",
                 description: 123456,
                 email: faker.internet.email(),
+                organization_email:faker.internet.email(),
+
                 name: faker.internet.userName(),
                 phone: "251911121318"
 
@@ -51,6 +58,8 @@ describe('create organization input data schema validation', ()=>{
                 description: "test test",
                 email:12345,
                 name: faker.internet.userName(),
+                organization_email:faker.internet.email(),
+
                 phone: "251911121318"
 
     }
@@ -60,6 +69,8 @@ describe('create organization input data schema validation', ()=>{
                 address: "addis ababa",
                 description: "test test",
                 email: faker.internet.email(),
+                organization_email:faker.internet.email(),
+
                 name: 12345,
                 phone: "251911121318"
 
@@ -71,6 +82,8 @@ describe('create organization input data schema validation', ()=>{
                 description: "test test",
                 email: faker.internet.email(),
                 name: faker.internet.userName(),
+                organization_email:faker.internet.email(),
+
                 phone: "janedoe"
 
     }
