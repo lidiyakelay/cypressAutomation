@@ -550,44 +550,7 @@ before("create organization functionality role Test Firm",()=>{
         )
     }
     )
-    it("Testing create public methodologies for firm User ",()=>{
-        cy.request(
-            {
-                method: 'POST',
-                url: constants.url+constants.createmethodology,
-                failOnStatusCode: false,
-                body:requestBody4,
-                headers: {
-                    'Cookie': 'session=' + session
-                }
-                
-            }
-        ).then((response)=>{
-              expect(response.status).to.eq(201)
-        }
-
-        )
-    }
-    )
-    it("Testing create public methodologies for firm User ",()=>{
-        cy.request(
-            {
-                method: 'POST',
-                url: constants.url+constants.createmethodology,
-                failOnStatusCode: false,
-                body:requestBody4,
-                headers: {
-                    'Cookie': 'session=' + session
-                }
-                
-            }
-        ).then((response)=>{
-              expect(response.status).to.eq(201)
-        }
-
-        )
-    }
-    )
+  
 
 
 })

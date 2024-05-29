@@ -1,4 +1,4 @@
-export const url='http://192.168.0.125/';
+export const url='http://192.168.8.167/';
 export const createOrg='create-org';
 export const login='Login';
 export const createProject='create-project';
@@ -20,6 +20,8 @@ export const createmethodology= 'create-methodology';
 export const sendmultiplesignupinvitations='send-multiple-signup-invitations'
 export const updateOrganization= 'update-organization';
 export const methodologies="methodologies"
+export const changestatusorg= 'change-org-status';
+
 
 
 

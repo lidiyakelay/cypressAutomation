@@ -51,10 +51,7 @@ describe('Accessing firm pages as super admin', () => {
             method:'Get',
             url:constants.url + constants.firmPage+"/1",
             failOnStatusCode: false,
-            headers:{
-                'Content-Type':'application/json',
-                'Authorization':'Bearer'+ authToken
-            }
+           
         }).then((response)=>{
             cy.log(response.body)
             expect(response.status).to.eq(200)
@@ -104,10 +101,7 @@ describe('Accessing firm pages as firmn', () => {
             method:'Get',
             url:constants.url + constants.firmPage+"/1",
             failOnStatusCode: false,
-            headers:{
-                'Content-Type':'application/json',
-                'Authorization':'Bearer'+ authToken
-            }
+           
         }).then((response)=>{
             cy.log(response.body)
             expect(response.status).to.eq(403)
