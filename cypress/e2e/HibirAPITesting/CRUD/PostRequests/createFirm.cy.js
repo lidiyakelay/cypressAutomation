@@ -22,15 +22,13 @@ describe('create firm functionality with valid data', ()=>{
 
     let authToken = null;
 
-    const requestBody= {
-        username: "Main",
-        password: "!QAZxsw2"
-    };
+    const requestBody= constants.mainAdmin
     const requestBody1= 
     {
                 accesstype: "Firm",
                 address: "addis ababa",
                 description: "test test",
+                organization_email: faker.internet.email(),
                 email: faker.internet.email(),
                 name: faker.internet.userName(),
                 phone: "251911121314"
@@ -89,15 +87,13 @@ describe('Testing  create firm from other invalid roles Client', ()=>{
 
 let authToken = null;
 
-const requestBody= {
-    username: "Client",
-    password: "!QAZxsw2"
-};
+const requestBody= constants.clientAdmin
 const requestBody1= 
 {
             accesstype: "Firm",
             address: "addis ababa",
             description: "test test",
+            organization_email: faker.internet.email(),
             email: faker.internet.email(),
             name: faker.internet.userName(),
             phone: "251911121314"
@@ -152,10 +148,7 @@ describe('Testing  create firm from other invalid roles Firm', ()=>{
 
     let authToken = null;
     
-    const requestBody= {
-        username: "Firm",
-        password: "!QAZxsw2"
-    };
+    const requestBody= constants.firmAdmin
 
     const requestBody1= 
     {
@@ -163,6 +156,7 @@ describe('Testing  create firm from other invalid roles Firm', ()=>{
                 address: "addis ababa",
                 description: "test test",
                 email: faker.internet.email(),
+                organization_email: faker.internet.email(),
                 name: faker.internet.userName(),
                 phone: "251911121314"
     
@@ -219,16 +213,14 @@ describe('create firm functionality Input data length Test', ()=>{
 
     let authToken = null;
 
-    const requestBody= {
-        username: "Main",
-        password: "!QAZxsw2"
-    };
+    const requestBody= constants.mainAdmin
     const requestBody1= 
     {
                 accesstype: "Firm",
                 address: "addis ababa",
                 description: "test test",
                 email: faker.internet.email(),
+                organization_email: faker.internet.email(),
                 name: faker.internet.userName(),
                 phone: " "
     
@@ -240,6 +232,7 @@ describe('create firm functionality Input data length Test', ()=>{
                 address: " ",
                 description: "test test",
                 email: faker.internet.email(),
+                organization_email: faker.internet.email(),
                 name: faker.internet.userName(),
                 phone: "251911121318"
     
@@ -251,6 +244,7 @@ describe('create firm functionality Input data length Test', ()=>{
                 description: " ",
                 email: faker.internet.email(),
                 name: faker.internet.userName(),
+                organization_email: faker.internet.email(),
                 phone: "251911121318"
     
     }
@@ -261,6 +255,7 @@ describe('create firm functionality Input data length Test', ()=>{
                 description: "testing",
                 email: Math.floor(Math.random() * 90 + 10),
                 name: faker.internet.userName(),
+                organization_email: faker.internet.email(),
                 phone: "251911121318"
     
     }
@@ -271,6 +266,7 @@ describe('create firm functionality Input data length Test', ()=>{
                 address: "addis ababa",
                 description: "test test",
                 email: faker.internet.email(),
+                organization_email: faker.internet.email(),
                 name: Math.floor(Math.random() * 90 + 10),
                 phone: "251911121318"
     
@@ -280,6 +276,7 @@ describe('create firm functionality Input data length Test', ()=>{
                 accesstype: " ",
                 address: "addis ababa",
                 description: "test test",
+                organization_email: faker.internet.email(),
                 email: faker.internet.email(),
                 name: faker.internet.userName(),
                 phone: "251910121314"
@@ -441,16 +438,14 @@ describe('create firm functionality Input data length Test', ()=>{
 
     let authToken = null;
 
-    const requestBody= {
-        username: "Main",
-        password: "!QAZxsw2"
-    };
+    const requestBody= constants.mainAdmin
 const requestBody1= 
 {
             accesstype: "Client",
             address: "addis ababa",
             description: "test test",
             email: faker.internet.email(),
+            organization_email: faker.internet.email(),
             name: "chapa",
             phone: "251911121314"
 
@@ -463,6 +458,7 @@ const requestBody2=
     description: "test test",
     email: "chapa@gmail.com",
     name: faker.internet.userName(),
+    organization_email: faker.internet.email(),
     phone: "251911121314"
 
 }
@@ -473,6 +469,7 @@ const requestBody3=
             description: "test test",
             email: faker.internet.email(),
             name: faker.internet.userName(),
+            organization_email: faker.internet.email(),
             phone: "251911121314"
 
 }
@@ -571,6 +568,7 @@ describe('Testing create firm functionality without logging in', ()=>{
                 address: "addis ababa",
                 description: "test test",
                 email: faker.internet.email(),
+                organization_email: faker.internet.email(),
                 name: faker.internet.userName(),
                 phone: "251911121314"
     
@@ -609,16 +607,14 @@ describe('Testing create firm functionality with incorrect accesstype', ()=>{
     
     let authToken = null;
 
-    const requestBody= {
-        username: "Main",
-        password: "!QAZxsw2"
-    };
+    const requestBody= constants.mainAdmin
     const requestBody1= 
     {
                 accesstype: "Client",
                 address: "addis ababa",
                 description: "test test",
                 email: faker.internet.email(),
+                organization_email: faker.internet.email(),
                 name: faker.internet.userName(),
                 phone: "251911121314"
     
@@ -629,6 +625,7 @@ describe('Testing create firm functionality with incorrect accesstype', ()=>{
                 address: "addis ababa",
                 description: "test test",
                 email: faker.internet.email(),
+                organization_email: faker.internet.email(),
                 name: faker.internet.userName(),
                 phone: "251911121314"
     
